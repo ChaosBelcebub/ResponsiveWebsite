@@ -84,7 +84,7 @@
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('lightswitch.php', { room: roomId },  function() {
+                $.get('py3/hello.wgsi',  function() {
                     $("#" + roomId + " .lightswitch-on").addClass('hidden');
                     $("#" + roomId + " .lightswitch-off").removeClass('hidden');
                 })
