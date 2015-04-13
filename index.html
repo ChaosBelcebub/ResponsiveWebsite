@@ -27,6 +27,7 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">SmartHome</a>
+                <a href="#" data-template="lights.html">Lichter</a>
             </div>
         </div>
     </nav>
@@ -76,43 +77,17 @@
 
     <script charset="utf-8">
         $(function() {
-            $('.lightswitch-on').click(function() {
-                var roomId = $(this).parent().attr('id');
-                var that = this;
-                var snd = new Audio("click.wav"); // buffers automatically when created
-                snd.play();
-
-                $('#alert-box').addClass('hidden');
-
-                $.get('py3/hello.wsgi',  function() {
-                    $("#" + roomId + " .lightswitch-on").addClass('hidden');
-                    $("#" + roomId + " .lightswitch-off").removeClass('hidden');
-                })
-                .fail(function() {
-                    $('#alert-box').removeClass('hidden');
-                });
+            $.get('light.html', function(data) {
+              $("#content").append(data);
             });
 
-            $('.lightswitch-off').click(function() {
-                var roomId = $(this).parent().attr('id');
-                var that = this;
-                var snd = new Audio("click.wav"); // buffers automatically when created
-                snd.play();
-
-                $('#alert-box').addClass('hidden');
-
-                $.get('lightswitch.php', { room: roomId },  function() {
-                    $("#" + roomId + " .lightswitch-off").addClass('hidden');
-                    $("#" + roomId + " .lightswitch-on").removeClass('hidden');
-                })
-                .fail(function() {
-                    $('#alert-box').removeClass('hidden');
-                });
+            $('.navibar-link').click(function() {
+              var template = $(this).attr('data-template');
+              $.get(template, function(data) {
+                $("#content").empty();
+                $("#content").append(data);
+              });
             });
-
-            $('#alert-close').click(function() {
-                $('#alert-box').addClass('hidden');
-            })
         });
     </script>
 </body>
