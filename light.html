@@ -1,0 +1,76 @@
+<h1 style="text-align:center">Lichtschalter</h1>
+
+      <div class="container">
+          <div class="alert alert-danger hidden" role="alert" id="alert-box">
+              Es ist ein Fehler aufgetreten
+              <button type="button" id="alert-close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+      </div>
+
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-xs-6"><p style="text-align:right">Zimmer 1</p></div>
+              <div class="col-xs-6" id="room1">
+                  <a href="#" class="lightswitch-on" style="width: 100px">
+                      <img alt="Anschalten" src="on.jpg" height="100">
+                  </a>
+                  <a href="#" class="lightswitch-off hidden" style="width: 100px">
+                      <img alt="Ausschalten" src="off.jpg" height="100">
+                  </a>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-xs-6"><p style="text-align:right">Zimmer 2</p></div>
+              <div class="col-xs-6" id="room2">
+                  <a href="#" class="lightswitch-on" style="width: 100px">
+                      <img alt="Anschalten" src="on.jpg" height="100">
+                  </a>
+                  <a href="#" class="lightswitch-off hidden" style="width: 100px">
+                      <img alt="Auschalten" src="off.jpg" height="100">
+                  </a>
+              </div>
+          </div>
+      </div>
+
+<script charset="utf-8">
+        $(function() {
+            $('.lightswitch-on').click(function() {
+                var roomId = $(this).parent().attr('id');
+                var that = this;
+                var snd = new Audio("click.wav"); // buffers automatically when created
+                snd.play();
+
+                $('#alert-box').addClass('hidden');
+
+                $.get('py3/hello.wsgi',  function() {
+                    $("#" + roomId + " .lightswitch-on").addClass('hidden');
+                    $("#" + roomId + " .lightswitch-off").removeClass('hidden');
+                })
+                .fail(function() {
+                    $('#alert-box').removeClass('hidden');
+                });
+            });
+
+            $('.lightswitch-off').click(function() {
+                var roomId = $(this).parent().attr('id');
+                var that = this;
+                var snd = new Audio("click.wav"); // buffers automatically when created
+                snd.play();
+
+                $('#alert-box').addClass('hidden');
+
+                $.get('lightswitch.php', { room: roomId },  function() {
+                    $("#" + roomId + " .lightswitch-off").addClass('hidden');
+                    $("#" + roomId + " .lightswitch-on").removeClass('hidden');
+                })
+                .fail(function() {
+                    $('#alert-box').removeClass('hidden');
+                });
+            });
+
+            $('#alert-close').click(function() {
+                $('#alert-box').addClass('hidden');
+            })
+        });
+    </script>
