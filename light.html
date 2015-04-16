@@ -35,6 +35,15 @@
 
 <script charset="utf-8">
         $(function() {
+            $.get('py3/check_light.wsgi',  function(response) {
+                if (response == true) {
+                  $("#" + roomId + " .lightswitch-on").addClass('hidden');
+                  $("#" + roomId + " .lightswitch-off").removeClass('hidden');
+                }
+            })
+            .fail(function() {
+            });
+
             $('.lightswitch-on').click(function() {
                 var roomId = $(this).parent().attr('id');
                 var that = this;
@@ -60,7 +69,7 @@
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('lightswitch.php', { room: roomId },  function() {
+                $.get('py3/hello.wsgi', { room: roomId },  function() {
                     $("#" + roomId + " .lightswitch-off").addClass('hidden');
                     $("#" + roomId + " .lightswitch-on").removeClass('hidden');
                 })
