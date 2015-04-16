@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 def application(environ, start_response):
-	response_body = 'The request method was %s' % environ['REQUEST_METHOD']
-
+	response_body = 'True'
+	
     #status = '400 Bad Request'
 	status = '200 OK'
     
