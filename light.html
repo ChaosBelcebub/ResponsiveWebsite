@@ -50,6 +50,8 @@
                 }
             })
             .fail(function() {
+              $('#loading-screen').addClass('hidden');
+              $('#light-table').removeClass('hidden');
             });
 
             $('.lightswitch-on').click(function() {
