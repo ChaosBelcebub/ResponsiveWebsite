@@ -45,13 +45,19 @@
 
 <script charset="utf-8">
         $(function() {
-            $.get('py3/check_light.wsgi', { room: 'room1' },  function(response) {
-                if (response == "True") {
+            $.get('py3/check_light.wsgi',  function(response) {
+                var obj = JSON.parse(response);
+
+                if (Boolean(obj[17])) {
                   $("#room1 .lightswitch-on").addClass('hidden');
                   $("#room1 .lightswitch-off").removeClass('hidden');
-                  $('#loading-screen').addClass('hidden');
-                  $('#light-table').removeClass('hidden');
                 }
+                if (Boolean(obj[18])) {
+                  $("#room2 .lightswitch-on").addClass('hidden');
+                  $("#room2 .lightswitch-off").removeClass('hidden');
+                }
+                $('#loading-screen').addClass('hidden');
+                $('#light-table').removeClass('hidden');
             })
             .fail(function() {
               $('#loading-screen').addClass('hidden');
