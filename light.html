@@ -45,7 +45,7 @@
 
 <script charset="utf-8">
         $(function() {
-            $.get('py3/check_light.wsgi',  function(response) {
+            $.get('py3/check_light.wsgi', { room: 'room1' },  function(response) {
                 if (response == "True") {
                   $("#room1 .lightswitch-on").addClass('hidden');
                   $("#room1 .lightswitch-off").removeClass('hidden');
