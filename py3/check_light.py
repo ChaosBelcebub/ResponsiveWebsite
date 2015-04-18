@@ -1,15 +1,19 @@
 #!/usr/bin/env/python3
 
-import wiringpi
-io = wiringpi.GPIO(wiringpi.GPIO.WPI_MODE_SYS)
-io.pinMode(17,io.OUTPUT)
+import subprocess
+from cgi import parse_qs, escape
 
 def application(environ, start_response):
-	if io.digitalRead(17) == 1:
-		response_body = 'True'
-		print "juhu"
-	else:
-		response_body = 'False'
+
+	d = parse_qs(environ['QUERY_STRING'])
+
+	room = d.get('room', [''])[0]
+	room = excape(room)
+	response_body = str(room)
+	#if subprocess.check_output(["gpio", "-g", "read", "17"]) == b'1\n':
+	#	response_body = 'True'
+	#else:
+	#	response_body = str(subprocess.check_output(["gpio", "-g", "read", "17"]))
 	
 	#status = '400 Bad Request'
 	status = '200 OK'
