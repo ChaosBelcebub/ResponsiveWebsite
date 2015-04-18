@@ -73,6 +73,7 @@
 
                 $('#alert-box').addClass('hidden');
 
+                $.get('py3/set_light.wsgi', { room: roomId, value: '1' },  function() {
                     $("#" + roomId + " .lightswitch-on").addClass('hidden');
                     $("#" + roomId + " .lightswitch-off").removeClass('hidden');
                 })
@@ -89,7 +90,7 @@
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('py3/hello.wsgi', { room: roomId },  function() {
+                $.get('py3/set_light.wsgi', { room: roomId, value: '0' },  function() {
                     $("#" + roomId + " .lightswitch-off").addClass('hidden');
                     $("#" + roomId + " .lightswitch-on").removeClass('hidden');
                 })
