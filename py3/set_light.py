@@ -9,20 +9,22 @@ def application(environ, start_response):
 	status = '200 OK'
 	d = parse_qs(environ['QUERY_STRING'])
 	room = d.get('room', [''])[0]
+	value = d.get('value', [''])[0]
 	room = escape(room)
+	value = escape(value)
 
 	output = {}
 
 	if str(room) == 'room1':
-		pset(17, 1)
-		if check(17) == 1:
+		pset(17, value)
+		if check(17) == int(value):
 			output[str(room)] = True
 		else:
 			output[str(room)] = False
 			status = '400 Bad Request'
 	elif str(room) == 'room2':
-		pset(18, 1)
-		if check(18) == 1:
+		pset(18, value)
+		if check(18) == int(value):
 			output[str(room)] = True
 		else:
 			output[str(room)] = False
