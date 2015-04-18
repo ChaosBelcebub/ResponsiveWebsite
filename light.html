@@ -45,6 +45,7 @@
 
 <script charset="utf-8">
         $(function() {
+            var snd = new Audio("click.wav"); // buffers automatically when created
             $.get('py3/check_light.wsgi',  function(response) {
                 var obj = JSON.parse(response);
 
@@ -68,14 +69,13 @@
             $('.lightswitch-on').click(function() {
                 var roomId = $(this).parent().attr('id');
                 var that = this;
-                var snd = new Audio("click.wav"); // buffers automatically when created
-                snd.play();
 
                 $('#alert-box').addClass('hidden');
 
                 $.get('py3/set_light.wsgi', { room: roomId, value: '1' },  function() {
                     $("#" + roomId + " .lightswitch-on").addClass('hidden');
                     $("#" + roomId + " .lightswitch-off").removeClass('hidden');
+                    snd.play();
                 })
                 .fail(function() {
                     $('#alert-box').removeClass('hidden');
@@ -85,14 +85,13 @@
             $('.lightswitch-off').click(function() {
                 var roomId = $(this).parent().attr('id');
                 var that = this;
-                var snd = new Audio("click.wav"); // buffers automatically when created
-                snd.play();
 
                 $('#alert-box').addClass('hidden');
 
                 $.get('py3/set_light.wsgi', { room: roomId, value: '0' },  function() {
                     $("#" + roomId + " .lightswitch-off").addClass('hidden');
                     $("#" + roomId + " .lightswitch-on").removeClass('hidden');
+                    snd.play();
                 })
                 .fail(function() {
                     $('#alert-box').removeClass('hidden');
