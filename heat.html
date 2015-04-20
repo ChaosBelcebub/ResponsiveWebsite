@@ -1,4 +1,5 @@
-<h1 style="text-align:center">Heizung</h1>
+<h1 class="text-center">Heizung</h1>
+
 <div class="spinner" id="loading-screen">
     <div class="rect1"></div>
     <div class="rect2"></div>
@@ -18,7 +19,7 @@
   </div>
 </div>
 
-<h1 class="hidden text-center" id="temp-desc">Aktuelle Temperatur:</h1>
+<h3 class="text-center">Aktuelle Temperatur:</h3>
 <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
 
 <script charset="utf-8">
@@ -29,7 +30,6 @@
         .fail(function() {
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
-          $('#temp-desc').removeClass('hidden');
           $('#alert-box2').removeClass('hidden');
         });
 
