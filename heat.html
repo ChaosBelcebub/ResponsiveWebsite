@@ -18,7 +18,8 @@
   </div>
 </div>
 
-<p class="hidden" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+<h1 class="hidden text-center" id="temp-desc">Aktuelle Temperatur:</h1>
+<p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
 
 <script charset="utf-8">
     $(function() {
@@ -28,6 +29,7 @@
         .fail(function() {
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
+          $('#temp-desc').removeClass('hidden');
           $('#alert-box2').removeClass('hidden');
         });
 

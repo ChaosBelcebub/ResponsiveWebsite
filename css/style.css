@@ -52,12 +52,13 @@
 }
 
 .temp {
-  font-size: 10rem;
+  margin: 50px auto;
+  font-size: 8rem;
   text-align: center;
 }
 
 .units {
-  font-size: 3rem;
+  font-size: 2rem;
   vertical-align: middle;
   letter-spacing: .35rem;
 }
