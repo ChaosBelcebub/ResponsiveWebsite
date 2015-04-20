@@ -6,3 +6,37 @@
     <div class="rect4"></div>
     <div class="rect5"></div>
 </div>
+
+<div class="container">
+  <div class="alert alert-danger hidden" role="alert" id="alert-box">
+      Es ist ein Fehler aufgetreten
+      <button type="button" id="alert-close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="alert alert-danger hidden" role="alert" id="alert-box2">
+      Beim Einlesen der Temperatur ist ein Fehler aufgetreten
+      <button type="button" id="alert-close2" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  </div>
+</div>
+
+<p class="hidden" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+
+<script charset="utf-8">
+    $(function() {
+        $.get('py3/check_temp.wsgi',  function(response) {
+            var obj = JSON.parse(response);
+        })
+        .fail(function() {
+          $('#loading-screen').addClass('hidden');
+          $('#temp').removeClass('hidden');
+          $('#alert-box2').removeClass('hidden');
+        });
+
+        $('#alert-close').click(function() {
+            $('#alert-box').addClass('hidden');
+        })
+
+        $('alert-close2').click(function() {
+            $('#alert-box2').addClass('hidden');
+        })
+    });
+</script>

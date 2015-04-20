@@ -50,3 +50,14 @@
     -webkit-transform: scaleY(1.0);
   }
 }
+
+.temp {
+  font-size: 10rem;
+  text-align: center;
+}
+
+.units {
+  font-size: 3rem;
+  vertical-align: middle;
+  letter-spacing: .35rem;
+}
