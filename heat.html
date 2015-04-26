@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<h3 class="text-center">Aktuelle Temperatur:</h3>
+<h3 class="text-center hidden" id="temp_header">Aktuelle Temperatur:</h3>
 <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
 
 <script charset="utf-8">
@@ -27,11 +27,15 @@
         $.get('py3/check_temp.wsgi',  function(response) {
             var obj = JSON.parse(response);
             document.getElementById("value").innerHTML = obj['sensor'];
+            $('#loading-screen').addClass('hidden');
+            $('#temp').removeClass('hidden');
+            $('#temp_header').removeClass('hidden');
         })
         .fail(function() {
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
           $('#alert-box2').removeClass('hidden');
+          $('#temp_header').removeClass('hidden');
         });
 
         $('#alert-close').click(function() {
