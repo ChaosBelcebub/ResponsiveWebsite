@@ -13,8 +13,8 @@ def application(environ, start_response):
 	# check the temperature:
 	# subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'1\n':
 
-	output['sensor'] = 22.5
-	output['option'] = options.temperature
+	output['sensor'] = '22.5'
+	output['option'] = str(options.temperature)
 
 	output = json.dumps(output)
 	response_body = output

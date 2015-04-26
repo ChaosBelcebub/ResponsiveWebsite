@@ -26,6 +26,7 @@
     $(function() {
         $.get('py3/check_temp.wsgi',  function(response) {
             var obj = JSON.parse(response);
+            document.getElementById("value").innerHTML = obj['sensor'];
         })
         .fail(function() {
           $('#loading-screen').addClass('hidden');
