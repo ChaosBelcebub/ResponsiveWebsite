@@ -2,6 +2,11 @@
 
 import json
 import subprocess
+import sys
+import os
+
+sys.path.append(os.path.dirname(__file__))
+
 import option
 
 def application(environ, start_response):
