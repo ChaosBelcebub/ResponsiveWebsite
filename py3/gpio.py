@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 from subprocess import call
-import option
 
 pins = [17, 18]
 
-option.init()
+with open('options', 'w') as f:
+	f.write('18.0')
+f.close()
 
-print(option.temperature)
+for pin in pins:
+	call(["gpio", "export", str(pin), "out"])

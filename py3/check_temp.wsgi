@@ -2,12 +2,6 @@
 
 import json
 import subprocess
-import sys
-import os
-
-sys.path.append(os.path.dirname(__file__))
-
-import option
 
 def application(environ, start_response):
 
@@ -19,7 +13,10 @@ def application(environ, start_response):
 	# subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'1\n':
 
 	output['sensor'] = '22.5'
-	output['option'] = str(option.temperature)
+
+	with open('options', 'r') as f:
+		output['option'] = f.read()
+	f.close()
 
 	output = json.dumps(output)
 	response_body = output
