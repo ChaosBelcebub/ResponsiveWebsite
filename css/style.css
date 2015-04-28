@@ -62,3 +62,14 @@
   vertical-align: middle;
   letter-spacing: .35rem;
 }
+
+.temp-table {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.table-element {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
