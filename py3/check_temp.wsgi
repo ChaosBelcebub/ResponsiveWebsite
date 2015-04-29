@@ -3,6 +3,7 @@
 import json
 import subprocess
 
+
 def application(environ, start_response):
 
 	status = '200 OK'
@@ -10,12 +11,9 @@ def application(environ, start_response):
 	output = {}
 
 	# check the temperature:
-	# subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'1\n':
 
-	output['sensor'] = '22.5'
-
-	with open('options', 'r') as f:
-		output['option'] = f.read()
+	with open('/var/www/py3/options', 'r') as f:
+		output['value'] = f.read()
 	f.close()
 
 	output = json.dumps(output)
