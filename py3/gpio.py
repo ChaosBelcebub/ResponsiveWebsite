@@ -4,7 +4,7 @@ from subprocess import call
 
 pins = [17, 18]
 
-with open('options', 'w') as f:
+with open('/var/www/py3/options', 'w') as f:
 	f.write('18.0')
 f.close()
 
