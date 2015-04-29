@@ -3,6 +3,10 @@
 import json
 import subprocess
 
+import sys, os
+
+import grovepi
+
 def application(environ, start_response):
 
 	status = '200 OK'
@@ -10,12 +14,10 @@ def application(environ, start_response):
 	output = {}
 
 	# check the temperature:
-	# subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'1\n':
 
 	output['sensor'] = '22.5'
 
 	with open('options', 'r') as f:
-		print f.read()
 		output['option'] = f.read()
 	f.close()
 
