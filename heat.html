@@ -19,8 +19,14 @@
   </div>
 </div>
 
-<h3 class="text-center hidden" id="temp_header">Aktuelle Temperatur:</h3>
-<p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+<div class="row temp-table">
+  <h3 class="text-center hidden" id="temp_header">Eingestellte Temperatur:</h3>
+</div>
+<div class="row temp-table">
+  <div class="col-md-6 table-element">
+    <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+  </div><!--
+--><div class="col-md-6 table-element">
     <div class="dropdown" align="center">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
     Temperatur wählen
@@ -41,6 +47,7 @@
   </ul>
 </div>
   </div>
+</div>
 
 <script charset="utf-8">
     $(function() {
