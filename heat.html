@@ -65,6 +65,18 @@
           $('#temp_header').removeClass('hidden');
         });
 
+
+        $('.temperature-select').click(function() {
+            var value = $(this).attr('id');
+            
+            $.get('py3/set_temp.wsgi', { value: value },  function() {
+                    document.getElementById("value").innerHTML = value;
+                })
+                .fail(function() {
+                    $('#alert-box').removeClass('hidden');
+                });
+        })
+
         $('#alert-close').click(function() {
             $('#alert-box').addClass('hidden');
         })
