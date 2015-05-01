@@ -44,30 +44,36 @@
       </div>
 
 <script charset="utf-8">
+        var interval;
+
+        function check_light() {
+          $.get('py3/check_light.wsgi',  function(response) {
+              var obj = JSON.parse(response);
+              console.log("check_light")
+              if (Boolean(obj[17])) {
+                $("#room1 .lightswitch-on").addClass('hidden');
+                $("#room1 .lightswitch-off").removeClass('hidden');
+              }
+              if (Boolean(obj[18])) {
+                $("#room2 .lightswitch-on").addClass('hidden');
+                $("#room2 .lightswitch-off").removeClass('hidden');
+              }
+              $('#loading-screen').addClass('hidden');
+              $('#light-table').removeClass('hidden');
+          })
+          .fail(function() {
+            clearInterval(interval);
+            console.log("error");
+            $('#loading-screen').addClass('hidden');
+            $('#light-table').removeClass('hidden');
+            $('#alert-box2').removeClass('hidden');
+          });
+        }
+
         $(function() {
             var snd = new Audio("click.wav"); // buffers automatically when created
-            var interval = setInterval(
-              $.get('py3/check_light.wsgi',  function(response) {
-                  var obj = JSON.parse(response);
+            check_light();
 
-                  if (Boolean(obj[17])) {
-                    $("#room1 .lightswitch-on").addClass('hidden');
-                    $("#room1 .lightswitch-off").removeClass('hidden');
-                  }
-                  if (Boolean(obj[18])) {
-                    $("#room2 .lightswitch-on").addClass('hidden');
-                    $("#room2 .lightswitch-off").removeClass('hidden');
-                  }
-                  $('#loading-screen').addClass('hidden');
-                  $('#light-table').removeClass('hidden');
-              })
-              .fail(function() {
-                clearInterval(interval);
-                $('#loading-screen').addClass('hidden');
-                $('#light-table').removeClass('hidden');
-                $('#alert-box2').removeClass('hidden');
-              });
-            , 3000);
             $('.lightswitch-on').click(function() {
                 var roomId = $(this).parent().attr('id');
                 var that = this;
@@ -107,5 +113,8 @@
             $('#alert-close2').click(function() {
                 $('#alert-box2').addClass('hidden');
             })
+        });
+        $( document ).ready(function() {
+          interval = setInterval(check_light, 10000);
         });
     </script>
