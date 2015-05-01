@@ -53,10 +53,16 @@
               if (Boolean(obj[17])) {
                 $("#room1 .lightswitch-on").addClass('hidden');
                 $("#room1 .lightswitch-off").removeClass('hidden');
+              } else {
+                $("#room1 .lightswitch-off").addClass('hidden');
+                $("#room1 .lightswitch-on").removeClass('hidden');
               }
               if (Boolean(obj[18])) {
                 $("#room2 .lightswitch-on").addClass('hidden');
                 $("#room2 .lightswitch-off").removeClass('hidden');
+              } else {
+                $("#room2 .lightswitch-off").addClass('hidden');
+                $("#room2 .lightswitch-on").removeClass('hidden');
               }
               $('#loading-screen').addClass('hidden');
               $('#light-table').removeClass('hidden');
