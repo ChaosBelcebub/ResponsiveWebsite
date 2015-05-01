@@ -46,26 +46,28 @@
 <script charset="utf-8">
         $(function() {
             var snd = new Audio("click.wav"); // buffers automatically when created
-            $.get('py3/check_light.wsgi',  function(response) {
-                var obj = JSON.parse(response);
+            var interval = setInterval(
+              $.get('py3/check_light.wsgi',  function(response) {
+                  var obj = JSON.parse(response);
 
-                if (Boolean(obj[17])) {
-                  $("#room1 .lightswitch-on").addClass('hidden');
-                  $("#room1 .lightswitch-off").removeClass('hidden');
-                }
-                if (Boolean(obj[18])) {
-                  $("#room2 .lightswitch-on").addClass('hidden');
-                  $("#room2 .lightswitch-off").removeClass('hidden');
-                }
+                  if (Boolean(obj[17])) {
+                    $("#room1 .lightswitch-on").addClass('hidden');
+                    $("#room1 .lightswitch-off").removeClass('hidden');
+                  }
+                  if (Boolean(obj[18])) {
+                    $("#room2 .lightswitch-on").addClass('hidden');
+                    $("#room2 .lightswitch-off").removeClass('hidden');
+                  }
+                  $('#loading-screen').addClass('hidden');
+                  $('#light-table').removeClass('hidden');
+              })
+              .fail(function() {
+                clearInterval(interval);
                 $('#loading-screen').addClass('hidden');
                 $('#light-table').removeClass('hidden');
-            })
-            .fail(function() {
-              $('#loading-screen').addClass('hidden');
-              $('#light-table').removeClass('hidden');
-              $('#alert-box2').removeClass('hidden');
-            });
-
+                $('#alert-box2').removeClass('hidden');
+              });
+            , 3000);
             $('.lightswitch-on').click(function() {
                 var roomId = $(this).parent().attr('id');
                 var that = this;
