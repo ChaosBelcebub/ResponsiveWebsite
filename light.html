@@ -45,6 +45,9 @@
 
 <script charset="utf-8">
         var interval;
+        var snd = new Audio("click.wav"); // buffers automatically when created
+        var room1;
+        var room2;
 
         function check_light() {
           $.get('py3/check_light.wsgi',  function(response) {
@@ -69,7 +72,6 @@
           })
           .fail(function() {
             clearInterval(interval);
-            console.log("error");
             $('#loading-screen').addClass('hidden');
             $('#light-table').removeClass('hidden');
             $('#alert-box2').removeClass('hidden');
@@ -77,8 +79,6 @@
         }
 
         $(function() {
-            var snd = new Audio("click.wav"); // buffers automatically when created
-            check_light();
             $.get('py3/check_light.wsgi',  function(response) {
                 var obj = JSON.parse(response);
                 console.log("check_light")
