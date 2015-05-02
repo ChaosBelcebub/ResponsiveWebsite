@@ -60,12 +60,20 @@
                 $("#room1 .lightswitch-off").addClass('hidden');
                 $("#room1 .lightswitch-on").removeClass('hidden');
               }
+              if (room1 != Boolean(obj[17])) {
+                snd.play();
+                room1 = Boolean(obj[17]);
+              }
               if (Boolean(obj[18])) {
                 $("#room2 .lightswitch-on").addClass('hidden');
                 $("#room2 .lightswitch-off").removeClass('hidden');
               } else {
                 $("#room2 .lightswitch-off").addClass('hidden');
                 $("#room2 .lightswitch-on").removeClass('hidden');
+              }
+              if (room2 != Boolean(obj[18])) {
+                snd.play();
+                room2 = Boolean(obj[18]);
               }
               $('#loading-screen').addClass('hidden');
               $('#light-table').removeClass('hidden');
@@ -118,6 +126,11 @@
                     $("#" + roomId + " .lightswitch-on").addClass('hidden');
                     $("#" + roomId + " .lightswitch-off").removeClass('hidden');
                     snd.play();
+                    if (roomId == "room1") {
+                      room1 = true;
+                    } else {
+                      room2 = true;
+                    }
                 })
                 .fail(function() {
                     $('#alert-box').removeClass('hidden');
@@ -134,6 +147,11 @@
                     $("#" + roomId + " .lightswitch-off").addClass('hidden');
                     $("#" + roomId + " .lightswitch-on").removeClass('hidden');
                     snd.play();
+                    if (roomId == "room1") {
+                      room1 = false;
+                    } else {
+                      room2 = false;
+                    }
                 })
                 .fail(function() {
                     $('#alert-box').removeClass('hidden');
