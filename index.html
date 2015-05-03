@@ -65,6 +65,9 @@
               $.get(template, function(data) {
                 $("#content").empty();
                 $("#content").append(data);
+                if (template != 'light.html') {
+                    clearInterval(interval);
+                }
               });
             });
         });
