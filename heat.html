@@ -50,23 +50,26 @@
 </div>
 
 <script charset="utf-8">
-    $(function() {
-        $.get('py3/check_temp.wsgi',  function(response) {
-            var obj = JSON.parse(response);
-            document.getElementById("value").innerHTML = obj['value'];
-            $('#loading-screen').addClass('hidden');
-            $('#temp').removeClass('hidden');
-            $('#temp_header').removeClass('hidden');
-            $('#dropdown').removeClass('hidden');
-        })
-        .fail(function() {
+    function check_temp() {
+      $.get('py3/check_temp.wsgi',  function(response) {
+          var obj = JSON.parse(response);
+          document.getElementById("value").innerHTML = obj['value'];
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
-          $('#alert-box2').removeClass('hidden');
           $('#temp_header').removeClass('hidden');
           $('#dropdown').removeClass('hidden');
-        });
+      })
+      .fail(function() {
+        $('#loading-screen').addClass('hidden');
+        $('#temp').removeClass('hidden');
+        $('#alert-box2').removeClass('hidden');
+        $('#temp_header').removeClass('hidden');
+        $('#dropdown').removeClass('hidden');
+      });
+    }
 
+    $(function() {
+        check_temp();
 
         $('.temperature-select').click(function() {
             var value = $(this).attr('id');
