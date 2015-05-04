@@ -13,6 +13,10 @@ def application(environ, start_response):
 	# check the temperature:
 
 	with open('/var/www/py3/options', 'r') as f:
+		output['option'] = f.read()
+	f.close()
+
+	with open('/var/www/py3/temperature', 'r') as f:
 		output['value'] = f.read()
 	f.close()
 
