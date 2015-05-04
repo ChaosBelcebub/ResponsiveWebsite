@@ -27,7 +27,7 @@
     <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
   </div><!--
 --><div class="col-md-6 table-element">
-    <div class="dropdown" align="center">
+    <div class="dropdown hidden" id="dropdown" align="center">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
     Temperatur wählen
     <span class="caret"></span>
@@ -57,12 +57,14 @@
             $('#loading-screen').addClass('hidden');
             $('#temp').removeClass('hidden');
             $('#temp_header').removeClass('hidden');
+            $('#dropdown').removeClass('hidden');
         })
         .fail(function() {
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
           $('#alert-box2').removeClass('hidden');
           $('#temp_header').removeClass('hidden');
+          $('#dropdown').removeClass('hidden');
         });
 
 
