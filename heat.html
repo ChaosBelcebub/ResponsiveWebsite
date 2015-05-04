@@ -80,6 +80,7 @@
                     document.getElementById("value").innerHTML = value;
                 })
                 .fail(function() {
+                    clearInterval(temp_interval);
                     $('#alert-box').removeClass('hidden');
                 });
         })
