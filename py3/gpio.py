@@ -4,6 +4,10 @@ from subprocess import call
 import grovepi
 import time 
 
+def pset(pin, value):
+	call(["gpio", "-g", "write", str(pin), str(value)])
+
+
 pins = [17, 18]
 
 with open('/var/www/py3/options', 'w') as f:
@@ -42,14 +46,11 @@ while True:
 	except:
 		pass
 
-	if(sensor_value < 400 and sensor_value_prev >= 400):
+	if(sensor_value < 430 and sensor_value_prev >= 430):
 		for pin in pins:
 			pset(pin, 1)
-	elif(sensor_value > 400 and sensor_value_prev <= 400):
+	elif(sensor_value > 430 and sensor_value_prev <= 430):
 		for pin in pins:
 			pset(pin, 0)
 
 	sensor_value_prev = sensor_value
-
-def pset(pin, value):
-	subprocess.call(["gpio", "-g", "write", str(pin), str(value)])
