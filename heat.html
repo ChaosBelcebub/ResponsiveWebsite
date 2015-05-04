@@ -50,6 +50,8 @@
 </div>
 
 <script charset="utf-8">
+    var temp_interval;
+
     function check_temp() {
       $.get('py3/check_temp.wsgi',  function(response) {
           var obj = JSON.parse(response);
@@ -89,5 +91,9 @@
         $('#alert-close2').click(function() {
             $('#alert-box2').addClass('hidden');
         })
+    });
+
+    $( document ).ready(function() {
+      temp_interval = setInterval(check_temp, 2000);
     });
 </script>
