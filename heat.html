@@ -20,11 +20,18 @@
 </div>
 
 <div class="row temp-table">
-  <h3 class="text-center hidden" id="temp_header">Eingestellte Temperatur:</h3>
+  <h3 class="text-center hidden" id="temp_header">Aktuelle Temperatur:</h3>
+</div>
+<div class="row temp-table">
+  <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+</div>
+
+<div class="row temp-table">
+  <h3 class="text-center hidden" id="temp_header_2">Eingestellte Temperatur:</h3>
 </div>
 <div class="row temp-table">
   <div class="col-md-6 table-element">
-    <p class="hidden temp" id="temp"><span id="value">--</span><span class="units">ºC</span></p>
+    <p class="hidden temp" id="opt"><span id="option">--</span><span class="units">ºC</span></p>
   </div><!--
 --><div class="col-md-6 table-element">
     <div class="dropdown hidden" id="dropdown" align="center">
@@ -56,16 +63,21 @@
       $.get('py3/check_temp.wsgi',  function(response) {
           var obj = JSON.parse(response);
           document.getElementById("value").innerHTML = obj['value'];
+          document.getElementById("option").innerHTML = obj['option'];
           $('#loading-screen').addClass('hidden');
           $('#temp').removeClass('hidden');
+          $('#opt').removeClass('hidden');
           $('#temp_header').removeClass('hidden');
+          $('#temp_header_2').removeClass('hidden');
           $('#dropdown').removeClass('hidden');
       })
       .fail(function() {
         $('#loading-screen').addClass('hidden');
         $('#temp').removeClass('hidden');
+        $('#opt').removeClass('hidden');
         $('#alert-box2').removeClass('hidden');
         $('#temp_header').removeClass('hidden');
+        $('#temp_header_2').removeClass('hidden');
         $('#dropdown').removeClass('hidden');
       });
     }
@@ -77,7 +89,7 @@
             var value = $(this).attr('id');
             
             $.get('py3/set_temp.wsgi', { value: value },  function() {
-                    document.getElementById("value").innerHTML = value;
+                    document.getElementById("option").innerHTML = value;
                 })
                 .fail(function() {
                     clearInterval(temp_interval);
