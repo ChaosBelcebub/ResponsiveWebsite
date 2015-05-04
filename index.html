@@ -67,6 +67,8 @@
                 $("#content").append(data);
                 if (template != 'light.html') {
                     clearInterval(interval);
+                } else if (template != 'heat.html') {
+                    clearInterval(temp_interval);
                 }
               });
             });
