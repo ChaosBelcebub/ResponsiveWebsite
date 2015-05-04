@@ -62,14 +62,22 @@
 
             $('.navbar-link').click(function() {
               var template = $(this).attr('data-template');
+              try {
+                clearInterval(interval);
+              }
+              catch(err) {
+                console.log(err.message)
+              }
+              try {
+                clearInterval(temp_interval);
+              }
+              catch(err) {
+                console.log(err.message)
+              }
               $.get(template, function(data) {
                 $("#content").empty();
                 $("#content").append(data);
-                if (template != 'light.html') {
-                    clearInterval(interval);
-                } else if (template != 'heat.html') {
-                    clearInterval(temp_interval);
-                }
+                
               });
             });
         });
