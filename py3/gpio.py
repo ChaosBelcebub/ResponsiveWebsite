@@ -28,6 +28,10 @@ light_sensor = 0
 grovepi.pinMode(light_sensor, "INPUT")
 
 sensor = 1
+relais = 2
+option = 0.0
+grovepi.pinMode(relais,"OUTPUT")
+temp = 0.0
 
 while True:
 	time.sleep(0.5)
@@ -54,3 +58,16 @@ while True:
 			pset(pin, 0)
 
 	sensor_value_prev = sensor_value
+
+	try:
+		with open('/var/www/py3/options', 'r') as f:
+			option = float(f.read())
+		f.close()
+
+		if(temp < option):
+			grovepi.digitalWrite(relais,1)
+		else:
+			grovepi.digitalWrite(relais,0)
+	except:
+		grovepi.digitalWrite(relais,0)
+		
