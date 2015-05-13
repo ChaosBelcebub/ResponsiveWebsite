@@ -2,6 +2,7 @@
 
 from subprocess import call
 import grovepi
+import sqlite3 as lite
 import time
 import os
 
@@ -25,6 +26,10 @@ for pin in pins:
 
 sensor_value = 450 # Der Sensorwert wird mit "450" initialisiert
 sensor_value_prev = 450 # Der vorherige Sensorwert wird mit "450" initialisiert
+
+hour = time.strftime('%H')
+hour_prev = hour
+con = lite.connect('/var/www/py3/temperatur.db')
 
 light_sensor = 0 # Der Lichtsensor wird mit "0" initialisiert, da er an dem analogen (GrovePi) Anschluss "0" angeschlossen ist
 grovepi.pinMode(light_sensor, "INPUT")
@@ -72,18 +77,29 @@ while True:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
+	
+	hour = time.strftime('%H')
 
 	try:
-		Zeit = time.strftime('%Y-%m-%d %H:%M:%S')
-		
-
-		with open('/var/www/py3/temp-daten', 'a') as f:
-			f.write(Zeit +' '+ str(round(temp,1))+'\n' )
-		f.close()	
-		
-			
-				
-		#os.system('gnuplot /var/www/py3/temp.plt')
-		
+		if (hour != hour_prev):
+			with con:
+				cur = con.cursor()
+				cur.execute("insert into temp values('" + time.strftime('%d %m %Y') + "'," + time.strftime('%H') + ",'" + str(round(temp, 1)) + "')")
 	except:
-		pass	
+		print("error")
+	hour_prev = hour
+	
+	#try:
+	#	Zeit = time.strftime('%Y-%m-%d %H:%M:%S')
+	#	
+
+	#	with open('/var/www/py3/temp-daten', 'a') as f:
+	#		f.write(Zeit +' '+ str(round(temp,1))+'\n' )
+	#	f.close()	
+	#	
+	#		
+	#			
+	#	#os.system('gnuplot /var/www/py3/temp.plt')
+	#	
+	#except:
+	#	pass	
