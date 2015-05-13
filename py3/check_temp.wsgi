@@ -12,11 +12,11 @@ def application(environ, start_response):
 
 	# check the temperature:
 
-	with open('/var/www/py3/options', 'r') as f:
+	with open('/var/www/py3/options', 'r') as f: # Die eingestellte Temperatur wird aus der Textdatei "options" gelesen
 		output['option'] = f.read()
 	f.close()
 
-	with open('/var/www/py3/temperature', 'r') as f:
+	with open('/var/www/py3/temperature', 'r') as f: # Die Aktuelle Temperatur wird aus der Textdatei "temperature" gelesen
 		output['value'] = f.read()
 	f.close()
 

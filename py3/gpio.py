@@ -2,7 +2,9 @@
 
 from subprocess import call
 import grovepi
-import time 
+import time
+import os
+
 
 def pset(pin, value):
 	call(["gpio", "-g", "write", str(pin), str(value)])
@@ -10,25 +12,25 @@ def pset(pin, value):
 
 pins = [17, 18]
 
-with open('/var/www/py3/options', 'w') as f:
+with open('/var/www/py3/options', 'w') as f: 
 	f.write('18.0')
 f.close()
 
-with open('/var/www/py3/temperature', 'w') as f:
+with open('/var/www/py3/temperature', 'w') as f: 
 	f.write('18.0')
 f.close()
 
 for pin in pins:
 	call(["gpio", "export", str(pin), "out"])
 
-sensor_value = 450
-sensor_value_prev = 450
+sensor_value = 450 # Der Sensorwert wird mit "450" initialisiert
+sensor_value_prev = 450 # Der vorherige Sensorwert wird mit "450" initialisiert
 
-light_sensor = 0
+light_sensor = 0 # Der Lichtsensor wird mit "0" initialisiert, da er an dem analogen (GrovePi) Anschluss "0" angeschlossen ist
 grovepi.pinMode(light_sensor, "INPUT")
 
-sensor = 1
-relais = 2
+sensor = 1 # Der Temperatursensor wird mit "1" initialisiert, da er an dem analogen (GrovePi) Anschluss "1" angeschlossen ist
+relais = 2 # Das Relais wird mit "2" initialisiert, da es an dem digitalen (GrovePi) Anschluss "2" angeschlossen ist
 option = 0.0
 grovepi.pinMode(relais,"OUTPUT")
 temp = 0.0
@@ -39,8 +41,8 @@ while True:
 		temp = grovepi.temp(sensor,'1.1')
 	
 		with open('/var/www/py3/temperature', 'w') as f:
-			f.write(str(round(temp,1)))
-		f.close()
+			f.write(str(round(temp,1))) # Die aktuelle Temperatur wird gerundet auf eine Nachkommastelle in die Textdatei "temperature" als String reingeschrieben
+		f.close
 	except:
 		pass
 
@@ -70,4 +72,18 @@ while True:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
+
+	try:
+		Zeit = time.strftime('%Y-%m-%d %H:%M:%S')
 		
+
+		with open('/var/www/py3/temp-daten', 'a') as f:
+			f.write(Zeit +' '+ str(round(temp,1))+'\n' )
+		f.close()	
+		
+			
+				
+		#os.system('gnuplot /var/www/py3/temp.plt')
+		
+	except:
+		pass	
