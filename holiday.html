@@ -13,7 +13,7 @@
           </div>
     <div class="alert alert-danger hidden" role="alert" id="alert-box2">
               Beim Einlesen des Status ist ein Fehler aufgetreten
-              <button type="button" id="alert-close2" class="close" aria-label="               Close"><span aria-hidden="true">&times;</span></button>
+              <button type="button" id="alert-close2" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
       </div>
 
@@ -51,7 +51,8 @@
                 snd.play();
                 room1 = Boolean(obj[19]);
               }
-              }
+              $('#loading-screen').addClass('hidden');
+              $('#light-table').removeClass('hidden');
           }
           .fail(function() {
             clearInterval(interval);
