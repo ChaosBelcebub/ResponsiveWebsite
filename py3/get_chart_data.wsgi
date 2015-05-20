@@ -7,35 +7,22 @@ import sqlite3 as lite
 def application(environ, start_response):
 
 	status = '400 Bad Request'
-	output = ''
+	output = 'Datum/Stunde,Temperatur\n'
 	con = lite.connect('/var/www/py3/temperatur.db')
 
-	actual_date = datetime.date.today()
-	check_date = actual_date - datetime.timedelta(days=100)
-
 	with con:
-		status = '200 OK'
 		cur = con.cursor()
+		cur.execute("Select * from temp order by rowid asc")
 
-		while check_date != actual_date + datetime.timedelta(days=1):
-			hour = 0
-			while hour < 24:
-				cur.execute("Select * from temp where date = '" + check_date.strftime('%d %m %Y') + "' and hour = " + str(hour) + " limit 1")
-				result = cur.fetchone()
+		while True:
+			row = cur.fetchone()
 
-				if result == None:
-					output += "null"
-				else:
-					output += str(result[2])
+			if row == None:
+				break
 
-				if (check_date != actual_date or hour != 23):
-					output += ","
-
-				# output += check_date.strftime('%d %m %Y') + ' ' + str(hour) + '\n'
-				hour += 1
-
-			check_date = check_date + datetime.timedelta(days=1)
-
+			output += str(row[0]) + '/' + str(row[1]) + ',' + str(row[2]) + '\n'
+		status = '200 OK'
+		
 	response_body = output
 
 	response_headers = [('Content-Type', 'text/plain'),

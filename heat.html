@@ -56,6 +56,12 @@
   </div>
 </div>
 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/data.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 <script charset="utf-8">
     var temp_interval;
 
@@ -84,6 +90,40 @@
 
     $(function() {
         check_temp();
+
+        $.get('py3/get_chart_data.wsgi', function (data) {
+          $('#container').highcharts({
+
+                  title: {
+                      text: 'Temperaturverlauf'
+                  },
+
+                  subtitle: {
+                      text: 'Innentemperatur des SmartHome'
+                  },
+
+                  data: {
+                      csv: data
+                  },
+
+                  plotOptions: {
+                      series: {
+                          marker: {
+                              enabled: false
+                          }
+                      }
+                  },
+
+                  series: [{
+                      lineWidth: 1
+                  }, {
+                      type: 'areaspline',
+                      color: '#c4392d',
+                      negativeColor: '#5679c4',
+                      fillOpacity: 0.5
+                  }]
+              });
+        });
 
         $('.temperature-select').click(function() {
             var value = $(this).attr('id');
