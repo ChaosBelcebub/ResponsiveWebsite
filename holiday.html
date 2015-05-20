@@ -1,0 +1,123 @@
+<h1 style="text-align:center">Urlaubsmodus</h1>
+      <div class="spinner" id="loading-screen">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <div class="container-fluid">
+          <div class="alert alert-danger hidden" role="alert" id="alert-box">
+              Es ist ein Fehler aufgetreten
+              <button type="button" id="alert-close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+    <div class="alert alert-danger hidden" role="alert" id="alert-box2">
+              Beim Einlesen des Status ist ein Fehler aufgetreten
+              <button type="button" id="alert-close2" class="close" aria-label="               Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+      </div>
+
+      <div class="container-fluid hidden" id="light-table">
+          <div class="row">
+              <div class="col-xs-6"><p style="text-align:right">Zimmer 1</p></div>
+              <div class="col-xs-6" id="room1" >
+                  <a href="#" class="lightswitch-on" style="width: 100px">
+                      <img alt="Anschalten" src="button_green.png" height="100">
+                  </a>
+                  <a href="#" class="lightswitch-off hidden" style="width: 100px">
+                      <img alt="Auschalten" src="button_red.png" height="100">
+                  </a>
+              </div>
+          </div>
+
+<script charset="utf-8">
+        var interval;
+        var snd = new Audio("click.wav"); // buffers automatically when created
+        var room1;
+        
+
+        function check_holiday() {
+          $.get('py3/check_holiday.wsgi',  function(response) {
+              var obj = JSON.parse(response);
+              console.log("check_light")
+              if (Boolean(obj[19])) {
+                $("#room1 .lightswitch-on").addClass('hidden');
+                $("#room1 .lightswitch-off").removeClass('hidden');
+              } else {
+                $("#room1 .lightswitch-off").addClass('hidden');
+                $("#room1 .lightswitch-on").removeClass('hidden');
+              }
+              if (room1 != Boolean(obj[19])) {
+                snd.play();
+                room1 = Boolean(obj[19]);
+              }
+              }
+          }
+          .fail(function() {
+            clearInterval(interval);
+            $('#loading-screen').addClass('hidden');
+            $('#light-table').removeClass('hidden');
+            $('#alert-box2').removeClass('hidden');
+          });
+        }
+
+        $(function() {
+            $.get('py3/check_holiday.wsgi',  function(response) {
+                var obj = JSON.parse(response);
+                console.log("check_holiday")
+                if (Boolean(obj[19])) {
+                  $("#room1 .lightswitch-on").addClass('hidden');
+                  $("#room1 .lightswitch-off").removeClass('hidden');
+                } else {
+                  $("#room1 .lightswitch-off").addClass('hidden');
+                  $("#room1 .lightswitch-on").removeClass('hidden');
+                }
+                room1 = Boolean(obj[19]);
+            }   
+            .fail(function() {
+              clearInterval(interval);
+              $('#loading-screen').addClass('hidden');
+              $('#light-table').removeClass('hidden');
+              $('#alert-box2').removeClass('hidden');
+            });
+
+            $('.lightswitch-on').click(function() {
+                var roomId = $(this).parent().attr('id');
+                var that = this;
+
+                $('#alert-box').addClass('hidden');
+
+                $.get('py3/set_light.wsgi', { room: roomId, value: '1' },       function() {
+                    $("#" + roomId + " .lightswitch-on").addClass('hidden');
+                    $("#" + roomId + " .lightswitch-off").removeClass('hidden');
+                    snd.play();
+                    if (roomId == "room1") {
+                      room1 = true;
+                    }
+                    }
+                })
+                .fail(function() {
+                    $('#alert-box').removeClass('hidden');
+                });
+            });
+
+            $('.lightswitch-off').click(function() {
+                var roomId = $(this).parent().attr('id');
+                var that = this;
+
+                $('#alert-box').addClass('hidden');
+
+                $.get('py3/set_light.wsgi', { room: roomId, value: '0' },        
+            });
+
+            $('#alert-close').click(function() {
+                $('#alert-box').addClass('hidden');
+            })
+
+            $('#alert-close2').click(function() {
+                $('#alert-box2').addClass('hidden');
+            })
+    </script>
+
+
+

@@ -7,7 +7,7 @@ import sqlite3 as lite
 def application(environ, start_response):
 
 	status = '400 Bad Request'
-	output = 'Datum/Stunde,Temperatur\n'
+	output = 'Datum - Stunde,Temperatur\n'
 	con = lite.connect('/var/www/py3/temperatur.db')
 
 	with con:
@@ -20,7 +20,7 @@ def application(environ, start_response):
 			if row == None:
 				break
 
-			output += str(row[0]) + '/' + str(row[1]) + ',' + str(row[2]) + '\n'
+			output += str(row[0]) + ' - ' + str(row[1]) + ',' + str(row[2]) + '\n'
 		status = '200 OK'
 		
 	response_body = output
