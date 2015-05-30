@@ -11,7 +11,7 @@
               Es ist ein Fehler aufgetreten
               <button type="button" id="alert-close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-    <div class="alert alert-danger hidden" role="alert" id="alert-box2">
+    <div class="alert alert-danger hidden" role="alert" id="alert-box2">
               Beim Einlesen des Status ist ein Fehler aufgetreten
               <button type="button" id="alert-close2" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
@@ -19,16 +19,19 @@
 
       <div class="container-fluid hidden" id="light-table">
           <div class="row">
-              <div class="col-xs-6"><p style="text-align:right">Zimmer 1</p></div>
-              <div class="col-xs-6" id="room1" >
+	      <div class="col-xs-6"><p style="text-align:right"></p></div>
+              <div class="col-xs-6" id="room1">
+	         
                   <a href="#" class="lightswitch-on" style="width: 100px">
                       <img alt="Anschalten" src="button_green.png" height="100">
                   </a>
-                  <a href="#" class="lightswitch-off hidden" style="width: 100px">
+                     <a href="#" class="lightswitch-off hidden" style="width: 100px">
                       <img alt="Auschalten" src="button_red.png" height="100">
                   </a>
+	        
               </div>
           </div>
+      </div>
 
 <script charset="utf-8">
         var interval;
@@ -51,9 +54,9 @@
                 snd.play();
                 room1 = Boolean(obj[19]);
               }
-              $('#loading-screen').addClass('hidden');
-              $('#light-table').removeClass('hidden');
-          }
+	      $('#loading-screen').addClass('hidden');
+	      $('#light-table').removeClass('hidden');
+          })
           .fail(function() {
             clearInterval(interval);
             $('#loading-screen').addClass('hidden');
@@ -74,7 +77,10 @@
                   $("#room1 .lightswitch-on").removeClass('hidden');
                 }
                 room1 = Boolean(obj[19]);
-            }   
+             
+	       $('#loading-screen').addClass('hidden');
+	       $('#light-table').removeClass('hidden');
+		})   
             .fail(function() {
               clearInterval(interval);
               $('#loading-screen').addClass('hidden');
@@ -95,7 +101,7 @@
                     if (roomId == "room1") {
                       room1 = true;
                     }
-                    }
+                    
                 })
                 .fail(function() {
                     $('#alert-box').removeClass('hidden');
@@ -108,8 +114,18 @@
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('py3/set_light.wsgi', { room: roomId, value: '0' },        
-            });
+                $.get('py3/set_light.wsgi', { room: roomId, value: '0'}, function(){
+		$("#" + roomId + " .lightswitch-off").addClass('hidden');
+	        $("#" + roomId +" .lightswitch-on").removeClass('hidden');
+	        snd.play();
+		if(roomId == "room1"){
+		room1 = false;
+		}        
+            })
+		.fail(function(){
+		   $('#alert-box').removeClass('hidden');
+		});
+	    });
 
             $('#alert-close').click(function() {
                 $('#alert-box').addClass('hidden');
@@ -118,6 +134,7 @@
             $('#alert-close2').click(function() {
                 $('#alert-box2').addClass('hidden');
             })
+	});
     </script>
 
 

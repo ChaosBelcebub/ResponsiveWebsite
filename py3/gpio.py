@@ -11,7 +11,7 @@ def pset(pin, value):
 	call(["gpio", "-g", "write", str(pin), str(value)])
 
 
-pins = [17, 18]
+pins = [17, 18, 19]
 
 with open('/var/www/py3/options', 'w') as f: 
 	f.write('18.0')
