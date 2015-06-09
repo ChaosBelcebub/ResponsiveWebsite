@@ -10,8 +10,17 @@ import os
 def pset(pin, value):
 	call(["gpio", "-g", "write", str(pin), str(value)])
 
+def check(pin):
+	if subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'1\n':
+		return True;
+	elif subprocess.check_output(["gpio", "-g", "read", str(pin)]) == b'0\n':
+		return False;
+	else:
+		return False;
 
-pins = [17, 18, 19]
+
+output = [17, 18]
+inpu = [22, 23]
 
 with open('/var/www/py3/options', 'w') as f: 
 	f.write('18.0')
@@ -21,8 +30,12 @@ with open('/var/www/py3/temperature', 'w') as f:
 	f.write('18.0')
 f.close()
 
-for pin in pins:
+# Initalisiere in und ouput pins
+for pin in output:
 	call(["gpio", "export", str(pin), "out"])
+
+for pin in inpu:
+	call(["gpio", "export", str(pin), "in"])
 
 sensor_value = 450 # Der Sensorwert wird mit "450" initialisiert
 sensor_value_prev = 450 # Der vorherige Sensorwert wird mit "450" initialisiert
@@ -42,6 +55,8 @@ temp = 0.0
 
 while True:
 	time.sleep(0.5)
+
+	#Brauchen wir das noch?
 	try:
 		temp = grovepi.temp(sensor,'1.1')
 	
@@ -58,10 +73,10 @@ while True:
 		pass
 
 	if(sensor_value < 430 and sensor_value_prev >= 430):
-		for pin in pins:
+		for pin in output:
 			pset(pin, 1)
 	elif(sensor_value > 430 and sensor_value_prev <= 430):
-		for pin in pins:
+		for pin in output:
 			pset(pin, 0)
 
 	sensor_value_prev = sensor_value
@@ -71,13 +86,15 @@ while True:
 			option = float(f.read())
 		f.close()
 
-		if(temp < option):
+		# Vergleiche Temperaturen und pruefe Magnetschalter
+		if(temp < option and check(22) and check(23)):
 			grovepi.digitalWrite(relais,1)
 		else:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
 	
+	# Das ist ebenfals unnoetig, oder?
 	hour = time.strftime('%H')
 
 	try:
