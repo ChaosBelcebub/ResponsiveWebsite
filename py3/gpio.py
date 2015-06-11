@@ -56,7 +56,6 @@ temp = 0.0
 while True:
 	time.sleep(0.5)
 
-	#Brauchen wir das noch?
 	try:
 		temp = grovepi.temp(sensor,'1.1')
 	
@@ -93,30 +92,3 @@ while True:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
-	
-	# Das ist ebenfals unnoetig, oder?
-	hour = time.strftime('%H')
-
-	try:
-		if (hour != hour_prev):
-			with con:
-				cur = con.cursor()
-				cur.execute("insert into temp values('" + time.strftime('%d %m %Y') + "'," + time.strftime('%H') + ",'" + str(round(temp, 1)) + "')")
-	except:
-		print("error")
-	hour_prev = hour
-	
-	#try:
-	#	Zeit = time.strftime('%Y-%m-%d %H:%M:%S')
-	#	
-
-	#	with open('/var/www/py3/temp-daten', 'a') as f:
-	#		f.write(Zeit +' '+ str(round(temp,1))+'\n' )
-	#	f.close()	
-	#	
-	#		
-	#			
-	#	#os.system('gnuplot /var/www/py3/temp.plt')
-	#	
-	#except:
-	#	pass	
