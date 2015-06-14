@@ -92,3 +92,14 @@ while True:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
+
+	hour = time.strftime('%H')
+
+	try:
+		if (hour != hour_prev):
+			with con:
+				cur = con.cursor()
+				cur.execute("insert into temp values('" + time.strftime('%d %m %Y') + "'," + time.strftime('%H') + ",'" + str(round(temp, 1)) + "')")
+	except:
+		print("error")
+	hour_prev = hour
