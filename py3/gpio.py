@@ -120,7 +120,7 @@ while True:
 					data.append(float(row[2]))
 
 			# Erstelle neues Chart
-			chart = pygal.Line(x_label_rotation=270, x_labels_major_count=12, show_minor_x_labels=False, show_legend=False, no_data_text='Keine Daten gefunden', truncate_label=10, style=LightStyle)
+			chart = pygal.Line(x_label_rotation=270, x_labels_major_count=12, show_minor_x_labels=False, show_legend=False, no_data_text='Keine Daten gefunden', truncate_label=25, style=LightStyle)
 			chart.title = 'Temperaturverlauf der letzten 48 Messungen'
 			chart.x_labels = label
 			chart.add('Temperatur', data)
