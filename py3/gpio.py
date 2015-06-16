@@ -109,7 +109,7 @@ while True:
 				cur.execute("insert into temp values('" + time.strftime('%d %m %Y') + "'," + time.strftime('%H') + ",'" + str(round(temp, 1)) + "')")
 				# Lesen
 				cur = con.cursor()
-				cur.execute("select * from (SELECT rowid, date, hour, t FROM temp order by rowid desc limit 10) order by rowid asc")
+				cur.execute("select * from (SELECT rowid, date, hour, t FROM temp order by rowid desc limit 48) order by rowid asc")
 
 				while True:
 					row = cur.fetchone()
@@ -123,10 +123,10 @@ while True:
 			print("Database error")
 
 		# Erstelle neues Chart
-		chart = pygal.Line(x_label_rotation=270, x_labels_major_count=12, show_minor_x_labels=False, show_legend=False, no_data_text='Keine Daten gefunden', truncate_label=25, style=LightStyle)
+		chart = pygal.Line(x_label_rotation=45, x_labels_major_count=12, show_minor_x_labels=True, show_legend=False, no_data_text='Keine Daten gefunden', truncate_label=25, style=LightStyle)
 		chart.title = 'Temperaturverlauf der letzten 48 Messungen'
 		chart.x_labels = label
 		chart.add('Temperatur', data)
-		chart.render_to_file('../chart.svg')
+		chart.render_to_file('chart.svg')
 
 	hour_prev = hour
