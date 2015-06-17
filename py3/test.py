@@ -2,6 +2,7 @@ import sqlite3 as lite
 import pygal
 from pygal.style import LightStyle
 import time
+import os
 
 con = lite.connect('/var/www/py3/temperatur.db')
 
@@ -29,4 +30,5 @@ while True:
 	chart.x_labels = label
 	chart.add('Temperatur', data)
 	chart.render_to_file('chart.svg')
+	os.rename("chart.svg", "../chart.svg")
 	print("end")

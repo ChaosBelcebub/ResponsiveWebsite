@@ -128,5 +128,5 @@ while True:
 		chart.x_labels = label
 		chart.add('Temperatur', data)
 		chart.render_to_file('chart.svg')
-
+		os.rename("chart.svg", "../chart.svg")
 	hour_prev = hour
