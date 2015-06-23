@@ -19,43 +19,42 @@
 
       <div class="container-fluid hidden" id="light-table">
           <div class="row">
-	      <div class="col-xs-6"><p style="text-align:right"></p></div>
+          <div class="col-xs-6"><p style="text-align:right"></p></div>
               <div class="col-xs-6" id="room1">
-	         
-                  <a href="#" class="lightswitch-on" style="width: 100px">
+             
+                  <a href="#" class="holiday-on hidden" style="width: 100px">
                       <img alt="Anschalten" src="button_green.png" height="100">
                   </a>
-                     <a href="#" class="lightswitch-off hidden" style="width: 100px">
+                     <a href="#" class="holiday-off" style="width: 100px">
                       <img alt="Auschalten" src="button_red.png" height="100">
                   </a>
-	        
+            
               </div>
           </div>
       </div>
 
 <script charset="utf-8">
         var interval;
-        var snd = new Audio("click.wav"); // buffers automatically when created
-        var room1;
-        
+        var snd = new Audio("click.wav"); // buffers automatically when created     
+        var hday;
 
         function check_holiday() {
           $.get('py3/check_holiday.wsgi',  function(response) {
               var obj = JSON.parse(response);
-              console.log("check_light")
-              if (Boolean(obj[19])) {
-                $("#room1 .lightswitch-on").addClass('hidden');
-                $("#room1 .lightswitch-off").removeClass('hidden');
+              console.log("check_holiday2")
+              if (Boolean(obj['holiday'])) {
+                $("#room1 .holiday-on").removeClass('hidden');
+                $("#room1 .holiday-off").addClass('hidden');
               } else {
-                $("#room1 .lightswitch-off").addClass('hidden');
-                $("#room1 .lightswitch-on").removeClass('hidden');
+                $("#room1 .holiday-off").removeClass('hidden');
+                $("#room1 .holiday-on").addClass('hidden');
               }
-              if (room1 != Boolean(obj[19])) {
+              if (hday != Boolean(obj['holiday'])) {
                 snd.play();
-                room1 = Boolean(obj[19]);
+                hday = Boolean(obj['holiday']);
               }
-	      $('#loading-screen').addClass('hidden');
-	      $('#light-table').removeClass('hidden');
+          $('#loading-screen').addClass('hidden');
+          $('#light-table').removeClass('hidden');
           })
           .fail(function() {
             clearInterval(interval);
@@ -68,19 +67,19 @@
         $(function() {
             $.get('py3/check_holiday.wsgi',  function(response) {
                 var obj = JSON.parse(response);
-                console.log("check_holiday")
-                if (Boolean(obj[19])) {
-                  $("#room1 .lightswitch-on").addClass('hidden');
-                  $("#room1 .lightswitch-off").removeClass('hidden');
-                } else {
-                  $("#room1 .lightswitch-off").addClass('hidden');
-                  $("#room1 .lightswitch-on").removeClass('hidden');
-                }
-                room1 = Boolean(obj[19]);
+                console.log("check_holiday1")
+                if (Boolean(obj['holiday'])) {
+                $("#room1 .holiday-on").removeClass('hidden');
+                $("#room1 .holiday-off").addClass('hidden');
+              } else {
+                $("#room1 .holiday-off").removeClass('hidden');
+                $("#room1 .holiday-on").addClass('hidden');
+              }
+                room1 = Boolean(obj['holiday']);
              
-	       $('#loading-screen').addClass('hidden');
-	       $('#light-table').removeClass('hidden');
-		})   
+           $('#loading-screen').addClass('hidden');
+           $('#light-table').removeClass('hidden');
+        })   
             .fail(function() {
               clearInterval(interval);
               $('#loading-screen').addClass('hidden');
@@ -88,19 +87,16 @@
               $('#alert-box2').removeClass('hidden');
             });
 
-            $('.lightswitch-on').click(function() {
-                var roomId = $(this).parent().attr('id');
-                var that = this;
+            $('.holiday-on').click(function() {
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('py3/set_light.wsgi', { room: roomId, value: '1' },       function() {
-                    $("#" + roomId + " .lightswitch-on").addClass('hidden');
-                    $("#" + roomId + " .lightswitch-off").removeClass('hidden');
+                $.get('py3/set_holiday.wsgi', { value: '0' },       function() {
+                    $("#room1 .holiday-on").addClass('hidden');
+                    $("#room1 .holiday-off").removeClass('hidden');
                     snd.play();
-                    if (roomId == "room1") {
-                      room1 = true;
-                    }
+
+                    room1 = false;
                     
                 })
                 .fail(function() {
@@ -108,24 +104,22 @@
                 });
             });
 
-            $('.lightswitch-off').click(function() {
-                var roomId = $(this).parent().attr('id');
-                var that = this;
+            $('.holiday-off').click(function() {
 
                 $('#alert-box').addClass('hidden');
 
-                $.get('py3/set_light.wsgi', { room: roomId, value: '0'}, function(){
-		$("#" + roomId + " .lightswitch-off").addClass('hidden');
-	        $("#" + roomId +" .lightswitch-on").removeClass('hidden');
-	        snd.play();
-		if(roomId == "room1"){
-		room1 = false;
-		}        
-            })
-		.fail(function(){
-		   $('#alert-box').removeClass('hidden');
-		});
-	    });
+                $.get('py3/set_holiday.wsgi', { value: '1' },       function() {
+                    $("#room1 .holiday-on").removeClass('hidden');
+                    $("#room1 .holiday-off").addClass('hidden');
+                    snd.play();
+
+                    room1 = true;
+                    
+                })
+                .fail(function() {
+                    $('#alert-box').removeClass('hidden');
+                });
+        });
 
             $('#alert-close').click(function() {
                 $('#alert-box').addClass('hidden');
@@ -134,8 +128,5 @@
             $('#alert-close2').click(function() {
                 $('#alert-box2').addClass('hidden');
             })
-	});
+    });
     </script>
-
-
-

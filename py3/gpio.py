@@ -32,6 +32,10 @@ with open('/var/www/py3/temperature', 'w') as f:
 	f.write('18.0')
 f.close()
 
+with open('/var/www/py3/holiday', 'w') as f:
+	f.write('0')
+f.close()
+
 # Initalisiere in und ouput pins
 for pin in output:
 	call(["gpio", "export", str(pin), "out"])
