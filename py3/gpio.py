@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from subprocess import call
+import subprocess
 import grovepi
 import sqlite3 as lite
 import time
@@ -23,6 +24,8 @@ def check(pin):
 
 output = [17, 18]
 inpu = [22, 23]
+
+check(22)
 
 with open('/var/www/py3/options', 'w') as f: 
 	f.write('18.0')
@@ -59,6 +62,9 @@ option = 0.0
 grovepi.pinMode(relais,"OUTPUT")
 temp = 0.0
 
+holiday = False # Variable des Urlaubsmodus, nach Neustart ist dieser aus.
+timer = 0
+
 while True:
 	time.sleep(0.5)
 
@@ -67,7 +73,7 @@ while True:
 	
 		with open('/var/www/py3/temperature', 'w') as f:
 			f.write(str(round(temp,1))) # Die aktuelle Temperatur wird gerundet auf eine Nachkommastelle in die Textdatei "temperature" als String reingeschrieben
-		f.close
+		f.close()
 	except:
 		pass
 
@@ -87,17 +93,46 @@ while True:
 	sensor_value_prev = sensor_value
 
 	try:
+		with open('/var/www/py3/holiday', 'r') as f:
+			holiday = int(f.read())
+		f.close()
+
+		if(holiday == True and sensor_value < 430):
+			timer += 1
+			if(timer > 40):
+				for pin in output:
+					pset(pin, 0)
+		else:
+			timer = 0
+
+	except:
+		print("error holiday")
+		pass
+
+	try:
+		if(holiday == True):
+			with open('/var/www/py3/options', 'w') as f:
+				f.write('5.0')
+			f.close()
+
 		with open('/var/www/py3/options', 'r') as f:
 			option = float(f.read())
 		f.close()
 
 		# Vergleiche Temperaturen und pruefe Magnetschalter
+		tmp = check(22)
+		print("Pin 22: ")
+		print(tmp)
+		tmp = check(23)
+		print("Pin 23: ")
+		print(tmp)
 		if(temp < option and check(22) and check(23)):
 			grovepi.digitalWrite(relais,1)
 		else:
 			grovepi.digitalWrite(relais,0)
 	except:
 		grovepi.digitalWrite(relais,0)
+		print("error temp")
 
 	hour = time.strftime('%H')
 

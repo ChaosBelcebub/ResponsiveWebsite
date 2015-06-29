@@ -34,14 +34,14 @@
       </div>
 
 <script charset="utf-8">
-        var interval;
+        var holiday_interval;
         var snd = new Audio("click.wav"); // buffers automatically when created     
         var hday;
 
         function check_holiday() {
           $.get('py3/check_holiday.wsgi',  function(response) {
               var obj = JSON.parse(response);
-              console.log("check_holiday2")
+              console.log("check_holiday2");
               if (Boolean(obj['holiday'])) {
                 $("#room1 .holiday-on").removeClass('hidden');
                 $("#room1 .holiday-off").addClass('hidden');
@@ -67,7 +67,9 @@
         $(function() {
             $.get('py3/check_holiday.wsgi',  function(response) {
                 var obj = JSON.parse(response);
-                console.log("check_holiday1")
+                // console.log("check_holiday1");
+                console.log(obj['holiday']);
+                console.log("test");
                 if (Boolean(obj['holiday'])) {
                 $("#room1 .holiday-on").removeClass('hidden');
                 $("#room1 .holiday-off").addClass('hidden');
@@ -75,7 +77,7 @@
                 $("#room1 .holiday-off").removeClass('hidden');
                 $("#room1 .holiday-on").addClass('hidden');
               }
-                room1 = Boolean(obj['holiday']);
+                hday = Boolean(obj['holiday']);
              
            $('#loading-screen').addClass('hidden');
            $('#light-table').removeClass('hidden');
@@ -96,7 +98,7 @@
                     $("#room1 .holiday-off").removeClass('hidden');
                     snd.play();
 
-                    room1 = false;
+                    hday = false;
                     
                 })
                 .fail(function() {
@@ -113,7 +115,7 @@
                     $("#room1 .holiday-off").addClass('hidden');
                     snd.play();
 
-                    room1 = true;
+                    hday = true;
                     
                 })
                 .fail(function() {
@@ -128,5 +130,9 @@
             $('#alert-close2').click(function() {
                 $('#alert-box2').addClass('hidden');
             })
+    });
+    $( document ).ready(function() {
+      clearInterval(holiday_interval);
+      holiday_interval = setInterval(check_holiday, 2000);
     });
     </script>

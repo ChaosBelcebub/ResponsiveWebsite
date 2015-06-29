@@ -15,7 +15,9 @@
     <style media="screen">
         body {
             padding-top: 60px;
-        }
+
+		}
+	  
     </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -73,6 +75,12 @@
               }
               try {
                 clearInterval(temp_interval);
+              }
+              catch(err) {
+                console.log(err.message)
+              }
+              try {
+                clearInterval(holiday_interval);
               }
               catch(err) {
                 console.log(err.message)
