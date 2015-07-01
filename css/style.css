@@ -73,3 +73,6 @@
   vertical-align: middle;
   float: none;
 }
+.pad {
+  padding: 25px;
+}
